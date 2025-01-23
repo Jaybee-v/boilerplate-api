@@ -23,6 +23,24 @@ model Admin {
   updatedAt DateTime @updatedAt
 }
 
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  familyName String
+  email     String   @unique
+  password  String
+  role      UserRole @default(WAITING_LIST)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  BULDUING_MANAGER
+  COLLABORATOR
+  CRAFTMAN
+  WAITING_LIST
+}
+
 enum AdminRole {
   SUPER_ADMIN
   ADMIN

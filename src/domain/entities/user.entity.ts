@@ -1,17 +1,20 @@
 import validateEmail from '../rules/valid-email';
 
-export enum AdminRole {
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  ADMIN = 'ADMIN',
+export enum UserRole {
+  BULDUING_MANAGER = 'BULDUING_MANAGER',
+  COLLABORATOR = 'COLLABORATOR',
+  CRAFTMAN = 'CRAFTMAN',
+  WAITING_LIST = 'WAITING_LIST',
 }
 
-export class AdminEntity {
+export class UserEntity {
   constructor(
     private readonly id: string,
     private readonly name: string,
+    private readonly familyName: string,
     private readonly email: string,
     private readonly password: string,
-    private readonly role: AdminRole,
+    private readonly role: UserRole,
     private readonly createdAt: Date,
     private readonly updatedAt: Date,
   ) {
@@ -30,11 +33,15 @@ export class AdminEntity {
     return this.name;
   }
 
+  public getFamilyName(): string {
+    return this.familyName;
+  }
+
   public getPassword(): string {
     return this.password;
   }
 
-  public getRole(): AdminRole {
+  public getRole(): UserRole {
     return this.role;
   }
 
@@ -48,16 +55,17 @@ export class AdminEntity {
 
   static create(params: {
     name: string;
+    familyName: string;
     email: string;
     password: string;
-    role: AdminRole;
   }) {
-    return new AdminEntity(
+    return new UserEntity(
       undefined,
       params.name,
+      params.familyName,
       params.email,
       params.password,
-      params.role,
+      UserRole.WAITING_LIST,
       new Date(),
       new Date(),
     );

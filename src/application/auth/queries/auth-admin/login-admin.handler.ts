@@ -36,7 +36,6 @@ export class LoginAdminHandler {
       id: admin.getId(),
       email: admin.getEmail(),
     });
-
     const refreshUserToken =
       await this.refreshTokenRepository.findRefreshTokenByUserId(admin.getId());
 

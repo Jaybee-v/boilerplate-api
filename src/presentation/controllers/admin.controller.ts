@@ -20,8 +20,9 @@ import { LoginAdminDto } from '../data/dto/login-admin.dto';
 import { PatchAdminDto } from '../data/dto/patch-admin.dto';
 import { FiltersExceptions } from '../filters/exceptions.filter';
 import { AdminAuthGuard } from '../guards/admin/admin-auth.guard';
+import { ADMIN_ROUTES } from '../routes';
 
-@Controller('admin')
+@Controller(ADMIN_ROUTES.BASE)
 @UseFilters(FiltersExceptions)
 export class AdminController {
   constructor(
@@ -32,7 +33,7 @@ export class AdminController {
     private readonly findAllAdminHandler: FindAllAdminHandler,
   ) {}
 
-  @Post()
+  @Post(ADMIN_ROUTES.CREATE)
   async createAdmin(@Body() body: CreateAdminDto) {
     console.log('BODY IN CTRL', body);
     const successMessage = await this.createAdminHandler.execute(body);
@@ -43,7 +44,7 @@ export class AdminController {
     };
   }
 
-  @Post('login')
+  @Post(ADMIN_ROUTES.LOGIN)
   async loginAdmin(@Body() body: LoginAdminDto) {
     const data = await this.loginAdminHandler.execute(body);
     console.log(data);
@@ -54,7 +55,7 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
-  @Get('auth/verify')
+  @Get(ADMIN_ROUTES.VERIFY)
   async verifyAdmin(@Req() request: Request) {
     return {
       statusCode: 200,
@@ -62,7 +63,7 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
-  @Get('all')
+  @Get(ADMIN_ROUTES.FIND_ALL)
   async findAllAdmin() {
     const data = await this.findAllAdminHandler.execute();
     return {
@@ -71,7 +72,7 @@ export class AdminController {
     };
   }
 
-  @Post('auth/refresh')
+  @Post(ADMIN_ROUTES.REFRESH_TOKEN)
   async refreshToken(@Body() body: { refreshToken: string }) {
     console.log('BODY IN CTRL', body);
     const data = await this.refreshTokensHandler.execute({
@@ -85,7 +86,7 @@ export class AdminController {
   }
 
   @UseGuards(AdminAuthGuard)
-  @Patch(':id')
+  @Patch(ADMIN_ROUTES.PATCH)
   async patchAdmin(@Param('id') id: string, @Body() body: PatchAdminDto) {
     console.log('ID IN CTRL', id);
     console.log('BODY IN CTRL', body);
